@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Student Performance Analyzer{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>🎓 Student Performance Analyzer</h1>
+        <nav>
+            <a href="/">Home</a>
+            {% if current_user.is_authenticated %}
+                <a href="/dashboard">Dashboard</a>
+                {% if current_user.role == 'student' %}
+                    <a href="/student/marks">Marks</a>
+                    <a href="/student/attendance">Attendance</a>
+                    <a href="/student/assignments">Assignments</a>
+                {% elif current_user.role == 'teacher' %}
+                    <a href="/teacher/dashboard">Students</a>
+                {% elif current_user.role == 'admin' %}
+                    <a href="/admin/students">Manage Students</a>
+                    <a href="/admin/teachers">Teachers</a>
+                    <a href="/admin/school">School Settings</a>
+                {% endif %}
+                <a href="/logout">Logout ({{ current_user.username }})</a>
+            {% else %}
+                <a href="/login">Login</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Student Performance Analyzer | All Rights Reserved</p>
+    </footer>
+</body>
+</html>

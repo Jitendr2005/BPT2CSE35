@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}My Marks - Student Performance Analyzer{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2>My Marks</h2>
+    
+    {% if marks %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Subject</th>
+                <th>Mark</th>
+                <th>Out of</th>
+                <th>Percentage</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mark in marks %}
+            <tr>
+                <td>{{ mark.subject }}</td>
+                <td>{{ mark.mark }}</td>
+                <td>{{ mark.out_of }}</td>
+                <td>{{ (mark.mark / mark.out_of * 100)|round(2) }}%</td>
+                <td>{{ mark.date.strftime('%Y-%m-%d') if mark.date else 'N/A' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p class="mt-3"><strong>Average Marks: {{ average|round(2) }}%</strong></p>
+    {% else %}
+    <p>No marks available yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

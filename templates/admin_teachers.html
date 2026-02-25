@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Manage Teachers - Student Performance Analyzer{% endblock %}
+{% block content %}
+<h2>Teachers</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Created</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for teacher in teachers %}
+        <tr>
+            <td>{{ teacher.username }}</td>
+            <td>{{ teacher.email }}</td>
+            <td><span class="badge badge-info">{{ teacher.role }}</span></td>
+            <td>{{ teacher.created_at.strftime('%Y-%m-%d') if teacher.created_at else 'N/A' }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4">No teachers found</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

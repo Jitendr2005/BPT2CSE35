@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Manage Attendance - Student Performance Analyzer{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Attendance for {{ student.username }}</h2>
+    
+    <a href="{{ url_for('teacher_attendance_form', student_id=student._id) }}" class="btn btn-primary mb-3">+ Add Attendance</a>
+    
+    {% if attendance %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Subject</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in attendance %}
+            <tr>
+                <td>{{ record.date.strftime('%Y-%m-%d') if record.date else 'N/A' }}</td>
+                <td>{{ record.subject }}</td>
+                <td>
+                    {% if record.status == 'Present' %}
+                    <span class="badge badge-success">{{ record.status }}</span>
+                    {% elif record.status == 'Absent' %}
+                    <span class="badge badge-danger">{{ record.status }}</span>
+                    {% else %}
+                    <span class="badge badge-warning">{{ record.status }}</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ url_for('teacher_attendance_form', student_id=student._id, attendance_id=record._id) }}" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="{{ url_for('teacher_delete_attendance', student_id=student._id, attendance_id=record._id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Delete this record?')">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p class="mt-3"><strong>Attendance Rate: {{ attendance_rate|round(2) }}%</strong></p>
+    {% else %}
+    <p>No attendance records yet.</p>
+    {% endif %}
+    
+    <a href="{{ url_for('teacher_dashboard') }}" class="btn btn-secondary mt-3">Back to Dashboard</a>
+</div>
+{% endblock %}

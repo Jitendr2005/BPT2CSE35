@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Add/Edit Mark - Student Performance Analyzer{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2>{% if mark_id %}Edit{% else %}Add{% endif %} Mark for {{ student.username }}</h2>
+    
+    <form method="POST" class="mt-4">
+        <div class="form-group">
+            <label for="subject">Subject:</label>
+            <input type="text" id="subject" name="subject" class="form-control" value="{{ form.subject.data or '' }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="mark">Mark:</label>
+            <input type="number" id="mark" name="mark" class="form-control" step="0.01" value="{{ form.mark.data or '' }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="out_of">Out of:</label>
+            <input type="number" id="out_of" name="out_of" class="form-control" step="0.01" value="{{ form.out_of.data or 100 }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" class="form-control" value="{{ form.date.data or '' }}">
+        </div>
+        
+        <button type="submit" class="btn btn-success">{% if mark_id %}Update{% else %}Add{% endif %} Mark</button>
+        <a href="{{ url_for('teacher_marks', student_id=student._id) }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Manage Marks - Student Performance Analyzer{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Marks for {{ student.username }}</h2>
+    
+    <a href="{{ url_for('teacher_marks_form', student_id=student._id) }}" class="btn btn-primary mb-3">+ Add Mark</a>
+    
+    {% if marks %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Subject</th>
+                <th>Mark</th>
+                <th>Out of</th>
+                <th>Percentage</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mark in marks %}
+            <tr>
+                <td>{{ mark.subject }}</td>
+                <td>{{ mark.mark }}</td>
+                <td>{{ mark.out_of }}</td>
+                <td>{{ (mark.mark / mark.out_of * 100)|round(2) }}%</td>
+                <td>{{ mark.date.strftime('%Y-%m-%d') if mark.date else 'N/A' }}</td>
+                <td>
+                    <a href="{{ url_for('teacher_marks_form', student_id=student._id, mark_id=mark._id) }}" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="{{ url_for('teacher_delete_mark', student_id=student._id, mark_id=mark._id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Delete this mark?')">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p class="mt-3"><strong>Average: {{ average|round(2) }}%</strong></p>
+    {% else %}
+    <p>No marks recorded yet.</p>
+    {% endif %}
+    
+    <a href="{{ url_for('teacher_dashboard') }}" class="btn btn-secondary mt-3">Back to Dashboard</a>
+</div>
+{% endblock %}

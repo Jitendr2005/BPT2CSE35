@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Performance Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Student Performance Analyzer</h1>
+        <nav>
+            <a href="/">Home</a>
+            {% if current_user.is_authenticated %}
+            {% if current_user.role == 'student' %}
+            <a href="/student_dashboard">My Dashboard</a>
+            {% else %}
+            <a href="/dashboard">Dashboard</a>
+            {% endif %}
+            <a href="/logout">Logout</a>
+            {% else %}
+            <a href="/login">Login</a>
+            {% endif %}
+        </nav>
+    </header>
+    <main>
+        <section class="hero">
+            <h2>Welcome to Student Performance Analyzer</h2>
+            <p>Unlock data-driven insights into student performance with our comprehensive analysis tool designed for schools, teachers, and students.</p>
+            {% if not current_user.is_authenticated %}
+            <a href="/login" class="btn">Get Started</a>
+            {% endif %}
+        </section>
+        <section class="features">
+            <h3>Key Features</h3>
+            <div class="feature-grid">
+                <div class="feature">
+                    <h4>Data-Driven Insights</h4>
+                    <p>Convert raw data into meaningful performance trends and analytics.</p>
+                </div>
+                <div class="feature">
+                    <h4>Early Risk Detection</h4>
+                    <p>Identify at-risk students early for timely intervention and support.</p>
+                </div>
+                <div class="feature">
+                    <h4>Multi-User Platform</h4>
+                    <p>Tailored dashboards for administrators, teachers, and students.</p>
+                </div>
+                <div class="feature">
+                    <h4>Comprehensive Tracking</h4>
+                    <p>Monitor exams, assignments, attendance, and overall academic progress.</p>
+                </div>
+                <div class="feature">
+                    <h4>School Management</h4>
+                    <p>Complete school administration with student management and settings.</p>
+                </div>
+                <div class="feature">
+                    <h4>Visual Analytics</h4>
+                    <p>Intuitive charts and graphs for easy understanding and decision making.</p>
+                </div>
+            </div>
+        </section>
+        <section class="user-types">
+            <h3>Who Can Use This Platform?</h3>
+            <div class="user-grid">
+                <div class="user-type">
+                    <h4>Administrators</h4>
+                    <p>Manage school settings, oversee all students, and access comprehensive analytics.</p>
+                </div>
+                <div class="user-type">
+                    <h4>Teachers</h4>
+                    <p>Monitor student performance, manage student records, and track class progress.</p>
+                </div>
+                <div class="user-type">
+                    <h4>Students</h4>
+                    <p>View personal performance data, track progress, and stay informed about academic status.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Student Performance Analyzer. Production-Ready Educational Platform.</p>
+    </footer>
+</body>
+</html>
+    </main>
+    <footer>
+        <p>&copy; 2024 Student Performance Analyzer. College Mini Project.</p>
+    </footer>
+</body>
+</html>

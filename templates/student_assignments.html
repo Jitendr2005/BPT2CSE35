@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}My Assignments - Student Performance Analyzer{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2>My Assignments</h2>
+    
+    {% if assignments %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Subject</th>
+                <th>Due Date</th>
+                <th>Score</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for assignment in assignments %}
+            <tr>
+                <td>{{ assignment.title }}</td>
+                <td>{{ assignment.subject }}</td>
+                <td>{{ assignment.due_date.strftime('%Y-%m-%d') if assignment.due_date else 'N/A' }}</td>
+                <td>{{ assignment.score if assignment.score else 'Not Graded' }}</td>
+                <td>
+                    {% if assignment.status == 'Submitted' %}
+                    <span class="badge badge-success">{{ assignment.status }}</span>
+                    {% elif assignment.status == 'Pending' %}
+                    <span class="badge badge-warning">{{ assignment.status }}</span>
+                    {% else %}
+                    <span class="badge badge-danger">{{ assignment.status }}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No assignments available yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

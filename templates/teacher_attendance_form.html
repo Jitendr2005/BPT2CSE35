@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Add/Edit Attendance - Student Performance Analyzer{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2>{% if attendance_id %}Edit{% else %}Add{% endif %} Attendance for {{ student.username }}</h2>
+    
+    <form method="POST" class="mt-4">
+        <div class="form-group">
+            <label for="subject">Subject:</label>
+            <input type="text" id="subject" name="subject" class="form-control" value="{{ form.subject.data or '' }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" class="form-control" value="{{ form.date.data or '' }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="status">Status:</label>
+            <select id="status" name="status" class="form-control" required>
+                <option value="">Select Status</option>
+                <option value="Present" {% if form.status.data == 'Present' %}selected{% endif %}>Present</option>
+                <option value="Absent" {% if form.status.data == 'Absent' %}selected{% endif %}>Absent</option>
+                <option value="Leave" {% if form.status.data == 'Leave' %}selected{% endif %}>Leave</option>
+            </select>
+        </div>
+        
+        <button type="submit" class="btn btn-success">{% if attendance_id %}Update{% else %}Add{% endif %} Attendance</button>
+        <a href="{{ url_for('teacher_attendance', student_id=student._id) }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

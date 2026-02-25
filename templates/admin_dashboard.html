@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard - Student Performance Analyzer{% endblock %}
+{% block content %}
+<div class="dashboard">
+    <h2>Admin Dashboard</h2>
+    
+    {% if school %}
+    <div class="school-info">
+        <h3>{{ school.name }}</h3>
+        <p>{{ school.address }} | {{ school.phone }} | {{ school.email }}</p>
+    </div>
+    {% endif %}
+    
+    <div class="stats">
+        <div class="stat-card">
+            <h4>Total Students</h4>
+            <p class="stat-number">{{ total_students }}</p>
+        </div>
+        <div class="stat-card">
+            <h4>Total Teachers</h4>
+            <p class="stat-number">{{ total_teachers }}</p>
+        </div>
+        <div class="stat-card">
+            <h4>Total Marks</h4>
+            <p class="stat-number">{{ total_marks }}</p>
+        </div>
+        <div class="stat-card">
+            <h4>Total Attendance Records</h4>
+            <p class="stat-number">{{ total_attendance }}</p>
+        </div>
+    </div>
+
+    <div class="quick-links">
+        <h3>Quick Actions</h3>
+        <a href="/admin/students" class="btn btn-blue">Manage Students</a>
+        <a href="/admin/students/add" class="btn btn-green">Add New Student</a>
+        <a href="/admin/teachers" class="btn btn-purple">View Teachers</a>
+        <a href="/admin/school" class="btn btn-orange">School Settings</a>
+    </div>
+</div>
+{% endblock %}

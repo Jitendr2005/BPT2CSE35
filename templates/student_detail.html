@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ student.name }} - Student Performance Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>{{ student.name }}'s Performance Analysis</h1>
+        <nav>
+            <a href="/">Home</a>
+            {% if current_user.role == 'student' %}
+            <a href="/student_dashboard">My Dashboard</a>
+            {% else %}
+            <a href="/dashboard">Dashboard</a>
+            {% endif %}
+            <a href="/logout">Logout</a>
+        </nav>
+    </header>
+    <main>
+        <section class="student-summary">
+            <h2>Summary</h2>
+            <div class="summary-cards">
+                <div class="card">
+                    <h3>Average Marks</h3>
+                    <p>{{ "%.2f"|format(avg_marks) }}</p>
+                </div>
+                <div class="card">
+                    <h3>Attendance Rate</h3>
+                    <p>{{ "%.1f"|format(attendance_rate) }}%</p>
+                </div>
+                <div class="card">
+                    <h3>Grade</h3>
+                    <p>{{ student.grade }}</p>
+                </div>
+                <div class="card risk-{{ 'high' if avg_marks < 70 else 'medium' if avg_marks < 85 else 'low' }}">
+                    <h3>Risk Level</h3>
+                    <p>{{ 'High' if avg_marks < 70 else 'Medium' if avg_marks < 85 else 'Low' }}</p>
+                </div>
+            </div>
+        </section>
+        <section class="performance-charts">
+            <h2>Performance Trends</h2>
+            <canvas id="marksChart" width="600" height="300"></canvas>
+        </section>
+        <section class="detailed-metrics">
+            <h2>Recent Marks</h2>
+            <table>
+                <tr>
+                    <th>Subject</th>
+                    <th>Score</th>
+                    <th>Exam Type</th>
+                    <th>Date</th>
+                </tr>
+                {% for mark in marks %}
+                <tr>
+                    <td>{{ mark.subject }}</td>
+                    <td>{{ mark.score }}</td>
+                    <td>{{ mark.exam_type }}</td>
+                    <td>{{ mark.date.strftime('%Y-%m-%d') }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </section>
+        <section class="assignments-section">
+            <h2>Assignments</h2>
+            <table>
+                <tr>
+                    <th>Subject</th>
+                    <th>Title</th>
+                    <th>Score</th>
+                    <th>Max Score</th>
+                    <th>Percentage</th>
+                    <th>Date</th>
+                </tr>
+                {% for assignment in assignments %}
+                <tr>
+                    <td>{{ assignment.subject }}</td>
+                    <td>{{ assignment.title }}</td>
+                    <td>{{ assignment.score }}</td>
+                    <td>{{ assignment.max_score }}</td>
+                    <td>{{ "%.1f"|format(assignment.score / assignment.max_score * 100) }}%</td>
+                    <td>{{ assignment.date.strftime('%Y-%m-%d') }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </section>
+        <section class="attendance-section">
+            <h2>Attendance Record</h2>
+            <div class="attendance-summary">
+                <p><strong>Present:</strong> {{ attendances|selectattr('status', 'equalto', 'present')|list|length }}</p>
+                <p><strong>Absent:</strong> {{ attendances|selectattr('status', 'equalto', 'absent')|list|length }}</p>
+                <p><strong>Late:</strong> {{ attendances|selectattr('status', 'equalto', 'late')|list|length }}</p>
+                <p><strong>Total Days:</strong> {{ attendances|length }}</p>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Student Performance Analyzer</p>
+    </footer>
+    <script>
+        const marksData = {{ marks|sum(attribute='score') / marks|length if marks else 0 }};
+        const marksList = {{ marks | map(attribute='score') | list | tojson }};
+        const ctx = document.getElementById('marksChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ marks | map(attribute='exam_type') | list | tojson }},
+                datasets: [{
+                    label: 'Marks',
+                    data: marksList,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

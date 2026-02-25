@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard - Student Performance Analyzer{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Welcome, {{ current_user.username }}!</h2>
+    
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Average Marks</h5>
+                    <p class="card-text display-4">{{ average_marks|round(2) }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Attendance Rate</h5>
+                    <p class="card-text display-4">{{ attendance_rate|round(2) }}%</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Marks</h5>
+                    <p class="card-text display-4">{{ total_marks }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Assignments</h5>
+                    <p class="card-text display-4">{{ total_assignments }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <h4>Quick Links</h4>
+            <div class="list-group">
+                <a href="{{ url_for('student_marks') }}" class="list-group-item list-group-item-action">View Marks</a>
+                <a href="{{ url_for('student_attendance') }}" class="list-group-item list-group-item-action">View Attendance</a>
+                <a href="{{ url_for('student_assignments') }}" class="list-group-item list-group-item-action">View Assignments</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+</body>
+</html>
